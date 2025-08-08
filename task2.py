@@ -1,7 +1,7 @@
 # task2
 from typing import List
 from abc import ABC, abstractmethod
-import logging
+from logger_config import logger
 
 
 class Book:
@@ -32,18 +32,18 @@ class Library(LibraryInterface):
 
     def add_book(self, book: Book):
         self.books.append(book)
-        logging.info(f"Book {book.title} was successfully added")
+        logger.info(f"Book {book.title} was successfully added")
 
     def remove_book(self, title: str):
         for book in self.books:
             if book.title == title:
                 self.books.remove(book)
-                logging.info(f"Book {book.title} was successfully removed")
+                logger.info(f"Book {book.title} was successfully removed")
                 break
 
     def show_books(self):
         for book in self.books:
-            logging.info(
+            logger.info(
                 f"Title: {book.title}, Author: {book.author}, Year: {book.year}"
             )
 
@@ -58,13 +58,13 @@ class LibraryManager:
 
     def remove_book(self, title: str):
         if title == "" or title not in [book.title for book in self.library.books]:
-            logging.info(f"Book {title} not found")
+            logger.info(f"Book {title} not found")
             return
         self.library.remove_book(title)
 
     def show_books(self):
         if len(self.library.books) == 0:
-            logging.info("Library is empty.")
+            logger.info("Library is empty.")
             return
         self.library.show_books()
 
@@ -90,14 +90,8 @@ def main():
             case "exit":
                 break
             case _:
-                print("Invalid command. Please try again.")
+                logger.info("Invalid command. Please try again.")
 
 
 if __name__ == "__main__":
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,  # Set the logging level
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
-
     main()
